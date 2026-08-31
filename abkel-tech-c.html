@@ -1,0 +1,1234 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>ABKEL TECH COMPLEX — Engineering the Infrastructure of Tomorrow </title>
+<meta name="description" content="ABKEL TECH COMPLEX: enterprise software, cloud infrastructure, smart-city systems, cybersecurity and AI — engineered for governments, institutions and industry.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;0,9..144,900;1,9..144,500&family=Work+Sans:wght@300;400;500;600;700&family=IBM+Plex+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --ink:#0E1520;
+    --ink-soft:#161F2C;
+    --ink-line: rgba(228,195,79,0.22);
+    --paper:#FAF7EF;
+    --paper-soft:#F0E8D4;
+    --brass:#D6AE2E;
+    --brass-bright:#F2C94C;
+    --brass-dim:#8C6F1F;
+    --emerald:#144A3B;
+    --emerald-soft:#1E6650;
+    --slate:#A6B1C2;
+    --ink-text:#14181C;
+    --white:#FFFDF9;
+    --glow-brass: rgba(242,201,76,0.35);
+    --glow-emerald: rgba(30,102,80,0.4);
+    --spine-w: 64px;
+    --max: 1180px;
+    --ease: cubic-bezier(.22,.61,.36,1);
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  @media (prefers-reduced-motion: reduce){
+    html{scroll-behavior:auto;}
+    *{animation-duration:0.001ms !important; animation-iteration-count:1 !important; transition-duration:0.001ms !important; scroll-behavior:auto !important;}
+  }
+  body{
+    margin:0;
+    background:radial-gradient(ellipse at 20% 0%, #16202e 0%, var(--ink) 45%) fixed;
+    color:var(--white);
+    font-family:'Work Sans', sans-serif;
+    font-weight:400;
+    line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3,h4{
+    font-family:'Fraunces', serif;
+    margin:0;
+    font-weight:600;
+    letter-spacing:-0.01em;
+  }
+  a{color:inherit;}
+  img,svg{display:block; max-width:100%;}
+  ::selection{background:var(--brass); color:var(--ink);}
+  :focus-visible{outline:2px solid var(--brass-bright); outline-offset:3px;}
+
+  /* ===== AMBIENT GLOW + 3D UTILITIES ===== */
+  .glow-field{ position:absolute; inset:0; overflow:hidden; pointer-events:none; z-index:0; }
+  .glow-blob{
+    position:absolute; border-radius:50%; filter:blur(70px); opacity:0.55;
+    animation:breathe 9s ease-in-out infinite;
+  }
+  @keyframes breathe{ 0%,100%{ transform:scale(1) translateY(0); } 50%{ transform:scale(1.15) translateY(-14px); } }
+  @media (prefers-reduced-motion: reduce){ .glow-blob{ animation:none; } }
+
+  .tilt{ transform-style:preserve-3d; transition:transform .12s ease-out, box-shadow .4s var(--ease); will-change:transform; }
+  .tilt-perspective{ perspective:1000px; }
+
+  .eyebrow{
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.72rem;
+    letter-spacing:0.18em;
+    text-transform:uppercase;
+    color:var(--brass);
+    display:flex;
+    align-items:center;
+    gap:0.6em;
+  }
+  .eyebrow::before{
+    content:"";
+    width:22px; height:1px; background:var(--brass);
+    display:inline-block;
+  }
+
+  /* ===== SPINE (signature nav) ===== */
+  .spine{
+    position:fixed; top:0; left:0; bottom:0; width:var(--spine-w);
+    background:#080B0F;
+    border-right:1px solid var(--ink-line);
+    z-index:500;
+    display:flex; flex-direction:column; align-items:center;
+    justify-content:space-between;
+    padding:20px 0;
+  }
+  .spine__progress-track{
+    position:relative; width:2px; flex:1; background:rgba(255,255,255,0.08); margin:18px 0; border-radius:2px; overflow:hidden;
+  }
+  .spine__progress-fill{
+    position:absolute; bottom:0; left:0; width:100%; height:0%;
+    background:linear-gradient(to top, var(--brass), var(--brass-bright));
+    transition:height 0.08s linear;
+  }
+  .spine__mark{
+    writing-mode:vertical-rl;
+    transform:rotate(180deg);
+    font-family:'IBM Plex Mono', monospace;
+    font-size:0.62rem;
+    letter-spacing:0.22em;
+    color:var(--slate);
+    text-transform:uppercase;
+    white-space:nowrap;
+  }
+  .spine__dots{ display:flex; flex-direction:column; gap:14px; }
+  .spine__dot{
+    position:relative;
+    width:7px; height:7px; border-radius:50%; background:rgba(255,255,255,0.18);
+    border:none; padding:0; cursor:pointer; transition:all .25s var(--ease);
+  }
+  .spine__dot.active{ background:var(--brass-bright); box-shadow:0 0 0 4px rgba(228,195,79,0.18); }
+  .spine__dot:hover{ background:var(--brass); }
+  .spine__dot::after{
+    content:attr(data-label);
+    position:absolute; left:20px; top:50%; transform:translateY(-50%) translateX(-4px);
+    font-family:'IBM Plex Mono', monospace; font-size:0.62rem; letter-spacing:0.08em; text-transform:uppercase;
+    color:var(--ink); background:var(--brass-bright); padding:6px 10px; border-radius:3px; white-space:nowrap;
+    opacity:0; pointer-events:none; transition:opacity .2s var(--ease), transform .2s var(--ease);
+  }
+  .spine__dot:hover::after, .spine__dot:focus-visible::after{ opacity:1; transform:translateY(-50%) translateX(0); }
+
+  @media (max-width: 860px){
+    .spine{ display:none; }
+    :root{ --spine-w: 0px; }
+  }
+
+  /* ===== TOP UTILITY BAR (mobile + persistent CTA) ===== */
+  .topbar{
+    position:fixed; top:0; left:var(--spine-w); right:0; z-index:400;
+    display:flex; align-items:center; justify-content:space-between;
+    padding:16px 28px;
+    pointer-events:none;
+  }
+  .topbar__brandlock{
+    display:flex; align-items:center; gap:10px;
+    font-family:'IBM Plex Mono', monospace; font-size:0.68rem; letter-spacing:0.16em;
+    color:var(--paper); background:rgba(10,15,20,0.55); 
+    border:1px solid var(--ink-line); padding:8px 14px; border-radius:999px;
+    pointer-events:auto; text-transform:uppercase;
+  }
+  .topbar__logo{
+    height:22px; width:auto; max-width:120px; object-fit:contain; display:block;
+  }
+  .topbar__cta{
+    pointer-events:auto;
+    font-family:'IBM Plex Mono', monospace; font-size:0.7rem; letter-spacing:0.1em; text-transform:uppercase;
+    background:var(--brass); color:var(--ink); border:none; padding:11px 20px; border-radius:999px;
+    cursor:pointer; font-weight:500; transition:all .2s var(--ease);
+  }
+  .topbar__cta:hover{ background:var(--brass-bright); transform:translateY(-1px); }
+  .hamburger{ display:none; }
+  @media (max-width:860px){
+    .topbar{ left:0; padding:16px 18px; }
+    .topbar__cta{ padding:11px 16px; }
+    .topbar__cta span.long{display:none;}
+    .topbar__cta span.short{display:inline !important;}
+  }
+
+  /* ===== MOBILE MENU ===== */
+  .mobilenav-toggle{
+    display:none; pointer-events:auto; background:rgba(10,15,20,0.6); border:1px solid var(--ink-line);
+    width:44px; height:44px; border-radius:50%; align-items:center; justify-content:center; cursor:pointer;
+  }
+  @media (max-width:860px){ .mobilenav-toggle{ display:flex; } }
+  .mobilenav-toggle span, .mobilenav-toggle::before, .mobilenav-toggle::after{ display:none; }
+  .mobilenav-toggle .bars{ position:relative; width:18px; height:12px; }
+  .mobilenav-toggle .bars i{ position:absolute; left:0; right:0; height:1.5px; background:var(--paper); transition:all .25s var(--ease); }
+  .mobilenav-toggle .bars i:nth-child(1){ top:0; }
+  .mobilenav-toggle .bars i:nth-child(2){ top:5.5px; }
+  .mobilenav-toggle .bars i:nth-child(3){ top:11px; }
+  .mobilenav-toggle.open .bars i:nth-child(1){ top:5.5px; transform:rotate(45deg); }
+  .mobilenav-toggle.open .bars i:nth-child(2){ opacity:0; }
+  .mobilenav-toggle.open .bars i:nth-child(3){ top:5.5px; transform:rotate(-45deg); }
+
+  .mobilenav{
+    position:fixed; inset:0; background:var(--ink); z-index:600;
+    display:flex; flex-direction:column; justify-content:center; padding:40px;
+    transform:translateY(-100%); transition:transform .35s var(--ease);
+  }
+  .mobilenav.open{ transform:translateY(0); }
+  .mobilenav a{
+    font-family:'Fraunces', serif; font-size:2rem; text-decoration:none; color:var(--paper);
+    padding:12px 0; border-bottom:1px solid var(--ink-line);
+  }
+  .mobilenav__close{
+    position:absolute; top:20px; right:20px; background:none; border:1px solid var(--ink-line);
+    color:var(--paper); width:44px; height:44px; border-radius:50%; font-size:1.2rem; cursor:pointer;
+  }
+
+  /* ===== LAYOUT SHELLS ===== */
+  main{ margin-left:var(--spine-w); }
+  .wrap{ max-width:var(--max); margin:0 auto; padding:0 32px; position:relative; z-index:1; }
+  .glow-field{ z-index:0; }
+  @media (max-width:640px){ .wrap{ padding:0 20px; } }
+
+  section{ position:relative; }
+  .on-ink{ background:var(--ink); color:var(--paper); }
+  .on-paper{ background:var(--paper); color:var(--ink-text); }
+  .on-emerald{ background:var(--emerald); color:var(--paper); }
+
+  .reveal{ opacity:0; transform:translateY(28px); transition:opacity .8s var(--ease), transform .8s var(--ease); }
+  .reveal.in{ opacity:1; transform:translateY(0); }
+
+  .works.reveal .work,
+  .toc.reveal .toc__item,
+  .masthead.reveal .director,
+  .stats.reveal .stat{ opacity:0; transform:translateY(18px); transition:opacity .6s var(--ease), transform .6s var(--ease); }
+  .works.reveal.in .work,
+  .toc.reveal.in .toc__item,
+  .masthead.reveal.in .director,
+  .stats.reveal.in .stat{ opacity:1; transform:translateY(0); }
+  .works.reveal.in .work:nth-child(1), .toc.reveal.in .toc__item:nth-child(1), .masthead.reveal.in .director:nth-child(1), .stats.reveal.in .stat:nth-child(1){ transition-delay:.02s; }
+  .works.reveal.in .work:nth-child(2), .toc.reveal.in .toc__item:nth-child(2), .masthead.reveal.in .director:nth-child(2), .stats.reveal.in .stat:nth-child(2){ transition-delay:.1s; }
+  .works.reveal.in .work:nth-child(3), .toc.reveal.in .toc__item:nth-child(3), .masthead.reveal.in .director:nth-child(3), .stats.reveal.in .stat:nth-child(3){ transition-delay:.18s; }
+  .works.reveal.in .work:nth-child(4), .toc.reveal.in .toc__item:nth-child(4), .masthead.reveal.in .director:nth-child(4), .stats.reveal.in .stat:nth-child(4){ transition-delay:.26s; }
+  .works.reveal.in .work:nth-child(5), .toc.reveal.in .toc__item:nth-child(5){ transition-delay:.34s; }
+  .works.reveal.in .work:nth-child(6), .toc.reveal.in .toc__item:nth-child(6){ transition-delay:.42s; }
+
+  /* ===== HERO / COVER ===== */
+  .cover{
+    min-height:100vh; display:flex; flex-direction:column; justify-content:space-between;
+    padding-top:110px; padding-bottom:40px; overflow:hidden; position:relative;
+  }
+  .cover__top{
+    display:flex; justify-content:space-between; align-items:flex-start; gap:40px;
+    padding:0 32px; position:relative; z-index:2;
+  }
+  @media (max-width:640px){ .cover__top{ padding:0 20px; } }
+  .cover__issue{ font-family:'IBM Plex Mono', monospace; font-size:0.68rem; letter-spacing:0.14em; color:var(--slate); line-height:1.8; text-transform:uppercase; }
+  .cover__lines{ text-align:right; font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--paper); letter-spacing:0.04em; line-height:2.1; }
+  .cover__lines b{ color:var(--brass-bright); font-weight:500; }
+  @media (max-width:640px){ .cover__lines{ display:none; } }
+
+  .cover__main{
+    position:relative; flex:1; display:flex; align-items:center; padding:40px 32px; z-index:2;
+  }
+  @media (max-width:640px){ .cover__main{ padding:40px 20px; } }
+  .cover__orb{
+    position:absolute; right:-4%; top:50%; transform:translateY(-50%); width:56%; height:88%;
+    opacity:0.85; pointer-events:none; z-index:1;
+  }
+  @media (max-width:960px){ .cover__orb{ width:80%; opacity:0.4; right:-16%; } }
+  .cover__skyline{
+    position:absolute; right:-5%; top:0; bottom:0; width:62%; height:100%; opacity:0.4; pointer-events:none; z-index:0;
+    object-fit:cover; object-position:right center;
+    -webkit-mask-image:linear-gradient(to left, black 40%, transparent 92%);
+    mask-image:linear-gradient(to left, black 40%, transparent 92%);
+  }
+  @media (max-width:960px){ .cover__skyline{ width:90%; opacity:0.2; right:-20%; } }
+
+  .cover__content{ position:relative; z-index:3; max-width:760px; }
+  .cover__title{
+    font-size:clamp(2.6rem, 7vw, 5.6rem);
+    line-height:0.98;
+    font-weight:600;
+    color:var(--white);
+  }
+  .cover__title em{ font-style:italic; color:var(--brass-bright); font-weight:500; }
+  .cover__sub{
+    margin-top:24px; font-size:clamp(1rem,1.6vw,1.2rem); color:var(--slate); max-width:520px; font-weight:300;
+  }
+  .cover__actions{ margin-top:38px; display:flex; gap:16px; flex-wrap:wrap; align-items:center; }
+  .btn{
+    font-family:'IBM Plex Mono', monospace; font-size:0.76rem; letter-spacing:0.08em; text-transform:uppercase;
+    padding:15px 28px; border-radius:2px; text-decoration:none; display:inline-flex; align-items:center; gap:10px;
+    transition:all .25s var(--ease); border:1px solid transparent; cursor:pointer; font-weight:500;
+  }
+  .btn--brass{ background:var(--brass); color:var(--ink); }
+  .btn--brass:hover{ background:var(--brass-bright); transform:translateY(-2px); }
+  .btn--ghost{ border-color:rgba(255,255,255,0.25); color:var(--paper); }
+  .btn--ghost:hover{ border-color:var(--brass); color:var(--brass-bright); }
+
+  .cover__bottom{
+    display:flex; justify-content:space-between; align-items:flex-end; padding:0 32px; gap:20px; flex-wrap:wrap;
+  }
+  @media (max-width:640px){ .cover__bottom{ padding:0 20px; } }
+  .scrollcue{ font-family:'IBM Plex Mono', monospace; font-size:0.65rem; letter-spacing:0.14em; color:var(--slate); text-transform:uppercase; display:flex; align-items:center; gap:10px; }
+  .scrollcue__line{ width:1px; height:34px; background:linear-gradient(var(--brass), transparent); animation:pulseline 2.2s infinite; }
+  @keyframes pulseline{ 0%,100%{opacity:.3;} 50%{opacity:1;} }
+  .cover__partners{ font-family:'IBM Plex Mono', monospace; font-size:0.64rem; color:var(--slate); letter-spacing:0.1em; text-align:right; }
+
+  /* ===== SECTION HEADERS ===== */
+  .sec{ padding:120px 0; }
+  @media (max-width:640px){ .sec{ padding:80px 0; } }
+  .sec__head{ display:flex; justify-content:space-between; align-items:flex-end; gap:40px; margin-bottom:64px; flex-wrap:wrap; }
+  .sec__title{ font-size:clamp(2rem, 4.4vw, 3.4rem); margin-top:14px; max-width:640px; }
+  .sec__num{ font-family:'IBM Plex Mono', monospace; font-size:0.8rem; color:var(--brass-dim); }
+  .on-ink .sec__num{ color:var(--brass); }
+  .sec__note{ max-width:280px; font-size:0.92rem; color:var(--slate); border-left:1px solid var(--brass); padding-left:18px; }
+
+  /* ===== EDITOR'S LETTER (ABOUT) ===== */
+  .letter{ display:grid; grid-template-columns: 1fr 1.5fr; gap:70px; align-items:start; }
+  @media (max-width:860px){ .letter{ grid-template-columns:1fr; gap:30px; } }
+  .letter__figure{ position:sticky; top:120px; }
+  .letter__badge{
+    width:100%; aspect-ratio:1; border:1px solid var(--ink-line); border-radius:6px;
+    overflow:hidden; position:relative; transition:box-shadow .4s var(--ease);
+    background:var(--ink-soft);
+  }
+  .letter__figure:hover .letter__badge{ box-shadow:0 30px 60px -30px rgba(214,174,46,0.5); }
+  .letter__badge img{ width:100%; height:100%; object-fit:cover; }
+  .letter p{ font-size:1.12rem; color:#333; max-width:640px; }
+  .letter p::first-letter{
+    font-family:'Fraunces', serif; font-size:4.2rem; float:left; line-height:0.8; padding-right:12px; padding-top:6px;
+    color:var(--emerald); font-weight:600;
+  }
+  .letter__sign{ margin-top:30px; font-family:'Fraunces', serif; font-style:italic; font-size:1.3rem; color:var(--emerald); }
+  .letter__sign span{ display:block; font-family:'IBM Plex Mono', monospace; font-style:normal; font-size:0.7rem; letter-spacing:0.1em; color:var(--slate); margin-top:6px; text-transform:uppercase; }
+
+  /* ===== SERVICES (TOC style) ===== */
+  .toc{ border-top:1px solid var(--ink-line); }
+  .toc__item{
+    display:grid; grid-template-columns: 70px 1fr 160px; gap:28px; align-items:center;
+    padding:32px 0; border-bottom:1px solid var(--ink-line); transition:background .25s, padding-left .25s var(--ease);
+  }
+  .toc__item:hover{ background:rgba(201,162,39,0.045); padding-left:14px; }
+  @media (max-width:720px){ .toc__item{ grid-template-columns: 44px 1fr; } .toc__tag{ display:none; } }
+  .toc__index{ font-family:'IBM Plex Mono', monospace; color:var(--brass); font-size:1rem; }
+  .toc__body h3{ font-size:1.5rem; color:var(--white); font-weight:500; }
+  .toc__body p{ margin:8px 0 0; color:var(--slate); max-width:520px; font-size:0.98rem; }
+  .toc__row{ display:flex; align-items:center; gap:20px; }
+  .toc__icon{ width:34px; height:34px; flex:none; }
+  .toc__icon svg{ width:100%; height:100%; stroke:var(--brass); fill:none; stroke-width:1.3; }
+  .toc__tag{ font-family:'IBM Plex Mono', monospace; font-size:0.66rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--slate); text-align:right; }
+
+  /* ===== SELECTED WORKS ===== */
+  .works{ display:grid; grid-template-columns:repeat(3, 1fr); gap:2px; background:var(--ink-line); perspective:1200px; }
+  @media (max-width:900px){ .works{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:600px){ .works{ grid-template-columns:1fr; } }
+  .work{ background:var(--paper); padding:34px 30px; display:flex; flex-direction:column; gap:16px; transition:box-shadow .3s var(--ease); position:relative; z-index:1; }
+  .work:hover{ box-shadow:0 26px 50px -20px rgba(20,74,59,0.4); }
+  .work__art{ width:100%; height:130px; border:1px solid rgba(20,24,28,0.1); border-radius:4px; position:relative; overflow:hidden; background:var(--paper-soft); }
+  .work__art img{ width:100%; height:100%; object-fit:cover; }
+  .work__tag{ font-family:'IBM Plex Mono', monospace; font-size:0.64rem; letter-spacing:0.12em; text-transform:uppercase; color:var(--emerald); }
+  .work__title{ font-size:1.28rem; font-weight:600; }
+  .work__loc{ font-family:'IBM Plex Mono', monospace; font-size:0.68rem; color:#7a7263; text-transform:uppercase; letter-spacing:.06em;}
+  details.work__d{ margin-top:auto; }
+  details.work__d summary{
+    list-style:none; cursor:pointer; font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.08em;
+    text-transform:uppercase; color:var(--emerald); display:flex; align-items:center; gap:8px; padding-top:6px;
+  }
+  details.work__d summary::-webkit-details-marker{ display:none; }
+  details.work__d summary::after{ content:"+"; font-family:'Fraunces',serif; font-size:1rem; transition:transform .25s; }
+  details.work__d[open] summary::after{ transform:rotate(45deg); }
+  details.work__d p{ font-size:0.92rem; color:#4a4436; margin:12px 0 0; }
+
+  /* ===== MASTHEAD / DIRECTORS ===== */
+  .masthead{ display:grid; grid-template-columns:repeat(4, 1fr); gap:36px; perspective:1200px; }
+  @media (max-width:860px){ .masthead{ grid-template-columns:repeat(2,1fr); } }
+  @media (max-width:480px){ .masthead{ grid-template-columns:1fr; } }
+  .director{ text-align:left; }
+  .director__badge{
+    width:100%; aspect-ratio:1; border-radius:6px; border:1px solid var(--ink-line);
+    position:relative; margin-bottom:18px;
+    background:linear-gradient(160deg, #101820, #0A0F14);
+    overflow:hidden; transition:border-color .3s, box-shadow .3s;
+  }
+  .director:hover .director__badge{ border-color:var(--brass); box-shadow:0 0 0 1px rgba(242,201,76,0.3), 0 30px 60px -25px rgba(242,201,76,0.5); }
+  .director__badge::before{
+    content:""; position:absolute; inset:8px; border:1px solid rgba(242,201,76,0.35); border-radius:4px; z-index:2; pointer-events:none;
+  }
+  .director__badge img{ width:100%; height:100%; object-fit:cover; position:relative; z-index:1; }
+  .director__initials{
+    position:absolute; bottom:14px; right:14px; z-index:2; font-family:'IBM Plex Mono', monospace; font-size:0.72rem;
+    letter-spacing:0.08em; color:var(--brass-bright); background:rgba(10,15,20,0.5); padding:4px 9px; border-radius:3px;
+    border:1px solid var(--ink-line);
+  }
+  .director h3{ font-size:1.24rem; color:var(--white); font-weight:500; }
+  .director__role{ font-family:'IBM Plex Mono', monospace; font-size:0.68rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--brass); margin-top:6px; }
+  .director p{ color:var(--slate); font-size:0.92rem; margin-top:12px; }
+
+  /* ===== TESTIMONIALS ===== */
+  .quote-rig{ position:relative; max-width:840px; margin:0 auto; text-align:center; }
+  .quote-mark{ font-family:'Fraunces', serif; font-size:5rem; color:var(--brass); line-height:0; position:relative; top:30px; opacity:.6; }
+  .quote-slide{ display:none; }
+  .quote-slide.active{ display:block; animation:fadeup .6s var(--ease); }
+  @keyframes fadeup{ from{opacity:0; transform:translateY(14px);} to{opacity:1; transform:translateY(0);} }
+  .quote-text{ font-family:'Fraunces', serif; font-size:clamp(1.3rem,2.6vw,2rem); font-weight:400; font-style:italic; color:var(--white); line-height:1.4; }
+  .quote-attr{ margin-top:26px; font-family:'IBM Plex Mono', monospace; font-size:0.72rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--brass-bright); }
+  .quote-attr span{ display:block; color:var(--slate); margin-top:4px; text-transform:none; letter-spacing:0.02em; font-size:0.78rem; }
+  .quote-nav{ display:flex; justify-content:center; align-items:center; gap:24px; margin-top:44px; }
+  .quote-arrow{ background:none; border:1px solid var(--ink-line); color:var(--paper); width:42px; height:42px; border-radius:50%; cursor:pointer; font-size:1rem; transition:all .2s; }
+  .quote-arrow:hover{ border-color:var(--brass); color:var(--brass-bright); }
+  .quote-dots{ display:flex; gap:9px; }
+  .quote-dot{ width:6px; height:6px; border-radius:50%; background:rgba(255,255,255,0.2); border:none; cursor:pointer; }
+  .quote-dot.active{ background:var(--brass-bright); }
+
+  /* ===== VIDEO / WATCH FEATURE ===== */
+  .watch{ display:grid; grid-template-columns:1fr 1fr; gap:60px; align-items:center; }
+  @media (max-width:860px){ .watch{ grid-template-columns:1fr; gap:36px; } }
+  .watch__player{
+    position:relative; aspect-ratio:16/10; border-radius:6px; overflow:hidden; border:1px solid rgba(255,255,255,0.1);
+    background:#070b10;
+    box-shadow:0 40px 80px -40px rgba(0,0,0,0.6);
+  }
+  .watch__player img{ position:absolute; inset:0; width:100%; height:100%; object-fit:cover; z-index:0; opacity:0.7; }
+  .watch__shine{
+    position:absolute; top:0; bottom:0; width:40%; z-index:2; pointer-events:none;
+    background:linear-gradient(100deg, transparent, rgba(255,255,255,0.12), transparent);
+    animation:sweep 6s ease-in-out infinite;
+  }
+  @keyframes sweep{ 0%{ left:-45%; } 45%,100%{ left:120%; } }
+  @media (prefers-reduced-motion: reduce){ .watch__shine{ animation:none; display:none; } }
+  .watch__grid{ position:absolute; inset:0; background-image:
+      linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px);
+      background-size:36px 36px; opacity:.5; z-index:1; }
+  .watch__play{
+    position:absolute; inset:0; margin:auto; width:74px; height:74px; border-radius:50%;
+    background:rgba(243,239,230,0.95); border:none; cursor:pointer; display:flex; align-items:center; justify-content:center;
+    transition:all .25s var(--ease); z-index:3; box-shadow:0 0 0 0 rgba(242,201,76,0.5);
+  }
+  .watch__play:hover{ transform:scale(1.07); background:var(--brass-bright); box-shadow:0 0 0 14px rgba(242,201,76,0.12); }
+  .watch__play svg{ width:22px; height:22px; margin-left:4px; fill:var(--ink); }
+  .watch__meta{ position:absolute; left:20px; bottom:16px; font-family:'IBM Plex Mono', monospace; font-size:0.68rem; letter-spacing:0.08em; color:var(--paper); text-transform:uppercase; z-index:3; }
+  .watch__runtime{ position:absolute; right:20px; bottom:16px; font-family:'IBM Plex Mono', monospace; font-size:0.68rem; color:var(--slate); z-index:3;}
+  .watch__note{ margin-top:16px; font-size:0.82rem; color:var(--slate); }
+  .watch h3{ font-size:clamp(1.6rem,3vw,2.4rem); color:var(--white); }
+  .watch p.lead{ color:var(--slate); margin-top:18px; font-size:1.02rem; max-width:460px; }
+
+  /* ===== STATS ===== */
+  .stats{ display:grid; grid-template-columns:repeat(4,1fr); border-top:1px solid var(--ink-line); border-bottom:1px solid var(--ink-line); }
+  @media (max-width:720px){ .stats{ grid-template-columns:repeat(2,1fr); } }
+  .stat{ padding:44px 28px; border-right:1px solid var(--ink-line); }
+  .stat:last-child{ border-right:none; }
+  .stat__num{ font-family:'Fraunces', serif; font-size:clamp(2.2rem,4vw,3.2rem); color:var(--brass-bright); font-weight:600; }
+  .stat__label{ margin-top:10px; font-family:'IBM Plex Mono', monospace; font-size:0.68rem; letter-spacing:0.08em; text-transform:uppercase; color:var(--slate); }
+
+  /* ===== CONTACT / BACK PAGE ===== */
+  .contact{ display:grid; grid-template-columns:1fr 1fr; gap:70px; }
+  @media (max-width:860px){ .contact{ grid-template-columns:1fr; gap:44px; } }
+  .contact__channels{ display:flex; flex-direction:column; gap:16px; margin-top:34px; }
+  .channel{
+    display:flex; align-items:center; gap:18px; padding:20px 22px; border:1px solid rgba(255,255,255,0.1);
+    border-radius:6px; text-decoration:none; color:var(--paper); transition:all .25s var(--ease);
+  }
+  .channel:hover{ border-color:var(--brass); background:rgba(201,162,39,0.06); transform:translateX(4px); }
+  .channel__icon{ width:40px; height:40px; border-radius:50%; display:flex; align-items:center; justify-content:center; flex:none; background:rgba(255,255,255,0.06); }
+  .channel__icon svg{ width:19px; height:19px; stroke:var(--brass-bright); fill:none; stroke-width:1.6; }
+  .channel__wa .channel__icon svg{ fill:var(--brass-bright); stroke:none; }
+  .channel__text b{ display:block; font-size:1rem; font-weight:500; }
+  .channel__text span{ display:block; font-family:'IBM Plex Mono', monospace; font-size:0.72rem; color:var(--slate); margin-top:3px; }
+
+  .form{ background:var(--ink-soft); border:1px solid var(--ink-line); border-radius:8px; padding:36px; box-shadow:0 30px 60px -35px rgba(0,0,0,0.5); }
+  .form label{ display:block; font-family:'IBM Plex Mono', monospace; font-size:0.66rem; letter-spacing:0.1em; text-transform:uppercase; color:var(--slate); margin-bottom:8px; margin-top:20px; }
+  .form label:first-of-type{ margin-top:0; }
+  .form input, .form textarea{
+    width:100%; background:transparent; border:none; border-bottom:1px solid rgba(255,255,255,0.16);
+    color:var(--white); font-family:'Work Sans', sans-serif; font-size:0.98rem; padding:9px 2px; resize:vertical;
+  }
+  .form input:focus, .form textarea:focus{ outline:none; border-color:var(--brass); }
+  .form__submit{ margin-top:28px; width:100%; justify-content:center; }
+  .form__note{ font-size:0.74rem; color:var(--slate); margin-top:14px; }
+  .form__status{ font-size:0.78rem; color:var(--brass-bright); margin-top:10px; min-height:1em; }
+
+  /* ===== FOOTER ===== */
+  footer{ padding:60px 0 40px; border-top:1px solid var(--ink-line); }
+  .footer__row{ display:flex; justify-content:space-between; flex-wrap:wrap; gap:24px; align-items:center; }
+  .footer__mark{ display:flex; align-items:center; gap:12px; font-family:'Fraunces', serif; font-size:1.4rem; }
+  .footer__mark span{ color:var(--brass); }
+  .footer__logo{ height:30px; width:auto; max-width:150px; object-fit:contain; display:block; }
+  .footer__links{ display:flex; gap:26px; flex-wrap:wrap; font-family:'IBM Plex Mono', monospace; font-size:0.7rem; letter-spacing:0.06em; text-transform:uppercase; color:var(--slate); }
+  .footer__links a{ text-decoration:none; }
+  .footer__links a:hover{ color:var(--brass-bright); }
+  .footer__fine{ margin-top:30px; font-family:'IBM Plex Mono', monospace; font-size:0.66rem; color:#4b525c; }
+
+  /* ===== FLOATING WHATSAPP + BACK TO TOP ===== */
+  .fab-col{ position:fixed; right:22px; bottom:22px; display:flex; flex-direction:column; gap:12px; z-index:450; }
+  .fab{
+    width:56px; height:56px; border-radius:50%; display:flex; align-items:center; justify-content:center;
+    text-decoration:none; box-shadow:0 8px 24px rgba(0,0,0,0.35); transition:all .25s var(--ease); border:none; cursor:pointer;
+  }
+  .fab--wa{ background:#25D366; position:relative; }
+  .fab--wa svg{ width:28px; height:28px; fill:#fff; }
+  .fab--wa::before{
+    content:""; position:absolute; inset:-4px; border-radius:50%; border:2px solid #25D366; opacity:0.55;
+    animation:pulsering 2.4s infinite;
+  }
+  @keyframes pulsering{ 0%{ transform:scale(0.9); opacity:0.6;} 70%{ transform:scale(1.35); opacity:0;} 100%{opacity:0;} }
+  .fab--top{ background:var(--ink-soft); border:1px solid var(--ink-line); color:var(--paper); opacity:0; pointer-events:none; }
+  .fab--top.show{ opacity:1; pointer-events:auto; }
+  .fab--top svg{ width:18px; height:18px; stroke:var(--paper); fill:none; stroke-width:2; }
+  .fab:hover{ transform:translateY(-3px); }
+
+  .section-divider{ height:1px; background:var(--ink-line); }
+</style>
+</head>
+<body>
+
+<!-- ===================== SPINE (fixed signature nav) ===================== -->
+<nav class="spine" aria-label="Section navigation">
+  <div class="spine__mark">ABKEL&nbsp;TECH&nbsp;COMPLEX — BUILDING THE NEXT GENERATION</div>
+  <div class="spine__progress-track"><div class="spine__progress-fill" id="progressFill"></div></div>
+  <div class="spine__dots" id="spineDots">
+    <button class="spine__dot" data-target="#cover" data-label="Cover" aria-label="Cover" aria-current="true"></button>
+    <button class="spine__dot" data-target="#letter" data-label="Editor's Letter" aria-label="Editor's letter"></button>
+    <button class="spine__dot" data-target="#services" data-label="Services" aria-label="Services"></button>
+    <button class="spine__dot" data-target="#works" data-label="Selected Works" aria-label="Selected works"></button>
+    <button class="spine__dot" data-target="#masthead" data-label="Directors" aria-label="Directors"></button>
+    <button class="spine__dot" data-target="#voices" data-label="Testimonials" aria-label="Testimonials"></button>
+    <button class="spine__dot" data-target="#watch" data-label="Watch" aria-label="Watch"></button>
+    <button class="spine__dot" data-target="#contact" data-label="Contact" aria-label="Contact"></button>
+  </div>
+</nav>
+
+<!-- ===================== TOP BAR ===================== -->
+<div class="topbar">
+  <!-- LOGO SLOT: replace the src below with your own logo file (e.g. "images/logo.png") -->
+  <div class="topbar__brandlock">
+    <img class="topbar__logo" id="siteLogo" src="logo.png" alt="Abkel Tech Complex logo" onerror="this.style.display='none'">
+    <span>ATC / VOL. I</span>
+  </div>
+  <div style="display:flex; align-items:center; gap:12px;">
+    <button class="topbar__cta" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">
+      <span class="long">Request a briefing</span><span class="short" style="display:none;">Contact</span>
+    </button>
+    <button class="mobilenav-toggle" id="mobileToggle" aria-label="Open menu" aria-expanded="false" aria-controls="mobileNav"><span class="bars"><i></i><i></i><i></i></span></button>
+  </div>
+</div>
+
+<!-- ===================== MOBILE NAV ===================== -->
+<div class="mobilenav" id="mobileNav">
+  <button class="mobilenav__close" id="mobileClose" aria-label="Close menu">✕</button>
+  <a href="#letter">Editor's Letter</a>
+  <a href="#services">Services</a>
+  <a href="#works">Selected Works</a>
+  <a href="#masthead">Directors</a>
+  <a href="#voices">Testimonials</a>
+  <a href="#watch">Watch</a>
+  <a href="#contact">Contact</a>
+</div>
+
+<main>
+
+<!-- ===================== COVER / HERO ===================== -->
+<section class="cover on-ink" id="cover">
+  <div class="glow-field">
+    <div class="glow-blob" style="width:520px; height:520px; top:-160px; right:5%; background:var(--glow-brass);"></div>
+    <div class="glow-blob" style="width:420px; height:420px; bottom:-140px; left:8%; background:var(--glow-emerald); animation-delay:2.5s;"></div>
+  </div>
+  <div class="cover__top">
+    <div class="cover__issue">
+      VOL. I — NO. 01<br>
+      EST. 2023<br>
+      CLASSIFICATION: TECH COMPLEX
+    </div>
+    <div class="cover__lines">
+      <div>INSIDE: <b>Seven Divisions, One Complex</b></div>
+      <div>THE MASTHEAD: <b>Meet the Directors</b></div>
+      <div>FIELD NOTES: <b>Works From Three Continents</b></div>
+      <div>THE VERDICT: <b>What Partners Are Saying</b></div>
+      <div>WATCH: <b>Inside the Complex — The Film</b></div>
+    </div>
+  </div>
+
+  <div class="cover__main">
+    <canvas class="cover__orb" id="heroCanvas" aria-hidden="true"></canvas>
+    <!-- IMAGE SLOT: swap this src for a skyline / office / campus photo -->
+    <img class="cover__skyline" id="heroSkyline" src="image 1.png" alt="City skyline" onerror="this.style.display='none'">
+
+    <div class="cover__content reveal in">
+      <div class="eyebrow">ABKEL TECH COMPLEX &amp; INFRASTRUCTURE</div>
+      <h1 class="cover__title">We build the<br>systems <em>institutions</em><br>run on.</h1>
+      <p class="cover__sub">ABKEL TECH COMPLEX designs and operates the software, systems design, and smart-systems infrastructure that governments, enterprises and investors depend on — engineered to a single standard: it must not fail.</p>
+      <div class="cover__actions">
+        <button class="btn btn--brass" onclick="document.getElementById('contact').scrollIntoView({behavior:'smooth'})">Request a Briefing</button>
+        <a class="btn btn--ghost" href="#works">See Selected Works</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="cover__bottom">
+    <div class="scrollcue"><div class="scrollcue__line"></div>Scroll to read</div>
+    <div class="cover__partners">TRUSTED BY MINISTRIES · UTILITIES · BANKS · CARRIERS</div>
+  </div>
+</section>
+
+<div class="section-divider"></div>
+
+<!-- ===================== EDITOR'S LETTER / ABOUT ===================== -->
+<section class="sec on-paper" id="letter">
+  <div class="wrap letter">
+    <div class="letter__figure reveal">
+      <div class="eyebrow" style="color:var(--emerald);">A NOTE FROM THE FOUNDER</div>
+      <!-- IMAGE SLOT: replace with a founder portrait -->
+      <div class="letter__badge" style="margin-top:20px;">
+        <img src="IMAGE 3.png" alt="Founder portrait" onerror="this.parentElement.style.display='none'">
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="eyebrow">EDITOR'S LETTER</div>
+      <h2 class="sec__title" style="margin-top:16px;">A complex, by definition, is many systems working as one.</h2>
+      <p>That is the whole premise of this company. ABKEL TECH COMPLEX was founded on a simple observation: the institutions that keep a country running — its ports, its ministries, its banks, its utilities — cannot afford systems that were built to impress rather than to hold.</p>
+      <p>ABKEL TECH COMPLEX is a multi-sector technology and entrepreneurial ecosystem dedicated to empowering youth through software engineering, vocational training, business incubation, and applied innovation.</p>
+      <p>Founded by Agbor Mengot Teba — known across the industry as A. B. Kel — a software engineer and entrepreneur, the company was built to bridge the gap between education and employment by providing practical, industry-relevant skills alongside enterprise-grade delivery.</p>
+      <p>Today we operate as a single technology partner across six disciplines. That distinction shapes every decision in this document, and every decision we make on site.</p>
+      <p>What follows is our record: the divisions we operate, the work we've delivered, the people who lead it, and what our partners say when we're not in the room. We hope it earns your time, and eventually, your trust.</p>
+      <div class="letter__sign">A. B. Kel<span>FOUNDER &amp; CHIEF EXECUTIVE</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SERVICES (TOC) ===================== -->
+<section class="sec on-ink" id="services">
+  <div class="glow-field"><div class="glow-blob" style="width:460px; height:460px; top:-80px; left:60%; background:var(--glow-brass);"></div></div>
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <div class="sec__num">TABLE OF CONTENTS</div>
+        <h2 class="sec__title">Seven divisions.<br>One complex.</h2>
+      </div>
+      <div class="sec__note">Each division operates independently and in concert — the same architects, the same accountability, the same delivery standard.</div>
+    </div>
+
+    <div class="toc reveal">
+      <div class="toc__item">
+        <div class="toc__index">01</div>
+        <div class="toc__body">
+          <div class="toc__row"><div class="toc__icon"><svg viewBox="0 0 24 24"><path d="M9 6 L3 12 L9 18 M15 6 L21 12 L15 18"/></svg></div><h3>Abkel Tech Solutions</h3></div>
+          <p>Custom platforms, engineered to solve a specific operational problem — not off-the-shelf software bent to fit.</p>
+        </div>
+        <div class="toc__tag">Software</div>
+      </div>
+      <div class="toc__item">
+        <div class="toc__index">02</div>
+        <div class="toc__body">
+          <div class="toc__row"><div class="toc__icon"><svg viewBox="0 0 24 24"><ellipse cx="12" cy="6" rx="8" ry="3"/><path d="M4 6 v6 c0 1.7 3.6 3 8 3 s8 -1.3 8 -3 V6"/><path d="M4 12 v6 c0 1.7 3.6 3 8 3 s8 -1.3 8 -3 v-6"/></svg></div><h3>Cloud &amp; Abkel Tech Studio</h3></div>
+          <p>Sovereign All Branding Services.</p>
+        </div>
+        <div class="toc__tag">Infrastructure</div>
+      </div>
+      <div class="toc__item">
+        <div class="toc__index">03</div>
+        <div class="toc__body">
+          <div class="toc__row"><div class="toc__icon"><svg viewBox="0 0 24 24"><path d="M4 20 V10 L9 6 L14 10 V20"/><path d="M14 20 V4 L20 8 V20"/></svg></div><h3>Smart Infrastructure &amp; GovTech</h3></div>
+          <p>Integrated systems for cities, ports and public institutions — where policy meets pipeline.</p>
+        </div>
+        <div class="toc__tag">Government</div>
+      </div>
+      <div class="toc__item">
+        <div class="toc__index">04</div>
+        <div class="toc__body">
+          <div class="toc__row"><div class="toc__icon"><svg viewBox="0 0 24 24"><path d="M12 3 L20 6 V12 C20 17 16.5 20.5 12 22 C7.5 20.5 4 17 4 12 V6 Z"/><path d="M9 12 L11 14 L15 9"/></svg></div><h3>Cybersecurity &amp; Assurance</h3></div>
+          <p>Zero-trust architecture, threat operations and compliance for regulated, high-stakes environments.</p>
+        </div>
+        <div class="toc__tag">Security</div>
+      </div>
+      <div class="toc__item">
+        <div class="toc__index">05</div>
+        <div class="toc__body">
+          <div class="toc__row"><div class="toc__icon"><svg viewBox="0 0 24 24"><circle cx="6" cy="6" r="2.4"/><circle cx="18" cy="6" r="2.4"/><circle cx="12" cy="18" r="2.4"/><line x1="8" y1="7" x2="15.5" y2="16"/><line x1="16" y1="7" x2="9" y2="16"/></svg></div><h3>AI &amp; Automation</h3></div>
+          <p>Applied machine learning and decision-support systems that move operations from reactive to predictive.</p>
+        </div>
+        <div class="toc__tag">Intelligence</div>
+      </div>
+      <div class="toc__item">
+        <div class="toc__index">06</div>
+        <div class="toc__body">
+          <div class="toc__row"><div class="toc__icon"><svg viewBox="0 0 24 24"><rect x="4" y="4" width="9" height="9"/><rect x="11" y="11" width="9" height="9"/></svg></div><h3>Systems Integration &amp; Advisory</h3></div>
+          <p>Bringing legacy and new systems into one governed, auditable complex — no silent seams.</p>
+        </div>
+        <div class="toc__tag">Advisory</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== SELECTED WORKS ===================== -->
+<section class="sec on-paper" id="works" style="padding-bottom:0;">
+  <div class="wrap" style="padding:0 0 90px;">
+    <div class="sec__head reveal" style="padding:0 32px;">
+      <div>
+        <div class="sec__num" style="color:var(--emerald);">FIELD NOTES</div>
+        <h2 class="sec__title">Selected works,<br>three continents.</h2>
+      </div>
+      <div class="sec__note" style="border-color:var(--emerald); color:#5a5344;">Names and figures are illustrative pending client disclosure clearance — full case files available under NDA on request.</div>
+    </div>
+  </div>
+
+  <div class="works reveal">
+    <div class="work tilt">
+      <div class="work__tag">School Management Systems</div>
+      <!-- IMAGE SLOT: project photo -->
+      <div class="work__art"><img src="https://placehold.co/600x260/F0E8D4/123C31?text=PROJECT+PHOTO+1" alt="National Port Authority project photo" loading="lazy"></div>
+      <div class="work__title"></div>
+      <div class="work__loc">SouthWest · 2023</div>
+      <details class="work__d"><summary>Read the brief</summary>
+      </details>
+    </div>
+    <div class="work tilt">
+      <div class="work__tag">Financial Services</div>
+      <!-- IMAGE SLOT: project photo -->
+      <div class="work__art"><img src="https://placehold.co/600x260/F0E8D4/123C31?text=PROJECT+PHOTO+2" alt="Regional Development Bank project photo" loading="lazy"></div>
+      <div class="work__title">Regional Development — Core Migration</div>
+      <div class="work__loc">Scameroon · 2023</div>
+      <details class="work__d"><summary>Read the brief</summary>
+      </details>
+    </div>
+    <div class="work tilt">
+      <div class="work__tag">Utilities</div>
+      <!-- IMAGE SLOT: project photo -->
+      <div class="work__art"><img src="https://placehold.co/600x260/F0E8D4/123C31?text=PROJECT+PHOTO+3" alt="PanAfrican Utilities Group project photo" loading="lazy"></div>
+      <div class="work__title">Utilities Services</div>
+      <div class="work__loc">SouthWest · 2024</div>
+      <details class="work__d"><summary>Read the brief</summary>
+      </details>
+    </div>
+    <div class="work tilt">
+      <div class="work__tag">Public Health</div>
+      <!-- IMAGE SLOT: project photo -->
+      <div class="work__art"><img src="https://placehold.co/600x260/F0E8D4/123C31?text=PROJECT+PHOTO+4" alt="Ministry of Health project photo" loading="lazy"></div>
+      <div class="work__title">Our Clinic Hospital </div>
+      <div class="work__loc">West Africa · 2024</div>
+      <details class="work__d"><summary>Read the brief</summary>
+        <p>Built an interoperable patient-records registry connecting 200+ facilities, with offline-first sync for low-connectivity regions.</p>
+      </details>
+    </div>
+    <div class="work tilt">
+      <div class="work__tag">Other Systems</div>
+      <!-- IMAGE SLOT: project photo -->
+      <div class="work__art"><img src="https://placehold.co/600x260/F0E8D4/123C31?text=PROJECT+PHOTO+5" alt="National Carrier project photo" loading="lazy"></div>
+      <div class="work__title"></div>
+      <div class="work__loc">From 2023· Till Date</div>
+      <details class="work__d"><summary>Read the brief</summary>
+        
+    </div>
+    <div class="work tilt">
+      <div class="work__tag">Smart City</div>
+      <!-- IMAGE SLOT: project photo -->
+      <div class="work__art"><img src="https://placehold.co/600x260/F0E8D4/123C31?text=PROJECT+PHOTO+6" alt="Capital City Authority project photo" loading="lazy"></div>
+      <div class="work__title">Capital City Authority — Integrated Traffic Complex</div>
+      <div class="work__loc"> · 2024</div>
+      <details class="work__d"><summary>Read the brief</summary>
+        <p>A city-wide adaptive traffic-signal network paired with public transit data, reducing average commute delay across six major corridors.</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== MASTHEAD / DIRECTORS ===================== -->
+<section class="sec on-ink" id="masthead">
+  <div class="glow-field"><div class="glow-blob" style="width:400px; height:400px; bottom:-100px; right:8%; background:var(--glow-emerald);"></div></div>
+  <div class="wrap">
+    <div class="sec__head reveal">
+      <div>
+        <div class="sec__num">THE MASTHEAD</div>
+        <h2 class="sec__title">The people who<br>answer for it.</h2>
+      </div>
+      <div class="sec__note">Four principals, one line of accountability — every engagement is led from the top, not handed off.</div>
+    </div>
+
+    <div class="masthead reveal">
+      <div class="director">
+        <!-- IMAGE SLOT: headshot -->
+        <div class="director__badge tilt">
+          <img src="image 4.jpeg" alt="A. B. Kel headshot" onerror="this.style.display='none'">
+          <span class="director__initials">AK</span>
+        </div>
+        <h3>A. B. KEL</h3>
+        <div class="director__role">Founder &amp; Group CEO</div>
+        <p>Sets the standard for every division and holds the pen on the largest engagements personally.</p>
+      </div>
+      <div class="director">
+        <!-- IMAGE SLOT: headshot -->
+        <div class="director__badge tilt">
+          <img src="IMG_8309.PNG" alt="Nji Wesley headshot" onerror="this.style.display='none'">
+          <span class="director__initials">NW</span>
+        </div>
+        <h3>NJI WESLEY</h3>
+        <div class="director__role">Director, Abkel Studio</div>
+        <p>Architects the platforms underneath our infrastructure and AI divisions; twenty years in distributed systems.</p>
+      </div>
+      <div class="director">
+        <!-- IMAGE SLOT: headshot — replace placeholder below with your COO's photo -->
+        <div class="director__badge tilt">
+          <img src="WhatsApp Image 2026-07-07 at 2.40.16 PM.jpeg" alt="Chief Operating Officer headshot placeholder">
+          <span class="director__initials">Chief</span>
+        </div>
+        <h3>—  —</h3>
+        <div class="director__role">Chief Operating Officer</div>
+        <p>Runs delivery across every active engagement — the reason our projects land on the date we quote.</p>
+      </div>
+      <div class="director">
+        <!-- IMAGE SLOT: headshot — replace placeholder below with your Partnerships lead's photo -->
+        <div class="director__badge tilt">
+          <img src="logo.png" alt="Head of Global Partnerships headshot placeholder">
+          <span class="director__initials">GP</span>
+        </div>
+        <h3>— Add Name —</h3>
+        <div class="director__role">Head of Global Partnerships</div>
+        <p>The first call for governments and institutional partners exploring a long-term relationship.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== TESTIMONIALS ===================== -->
+<section class="sec on-emerald" id="voices">
+  <div class="wrap">
+    <div class="eyebrow reveal" style="justify-content:center; color:var(--brass-bright);">THE VERDICT</div>
+    <div class="quote-rig reveal" style="margin-top:20px;">
+      <div class="quote-mark">"</div>
+      <div id="quoteSlides">
+        <div class="quote-slide active">
+          <p class="quote-text">They didn't just deliver software — they delivered an institution's confidence that the system would hold under real pressure.</p>
+          <div class="quote-attr">Chief Digital Officer<span>National Ports Authority</span></div>
+        </div>
+        <div class="quote-slide">
+          <p class="quote-text">ABKEL is the rare vendor that talks to your risk committee as fluently as it talks to your engineers.</p>
+          <div class="quote-attr">VP, Infrastructure<span>Regional Development Bank</span></div>
+        </div>
+        <div class="quote-slide">
+          <p class="quote-text">Our outage rate dropped within the first quarter. That is the entire pitch, delivered.</p>
+          <div class="quote-attr">Managing Director<span>PanAfrican Utilities Group</span></div>
+        </div>
+        <div class="quote-slide">
+          <p class="quote-text">We have worked with global integrators twice their size. None matched their speed to decision.</p>
+          <div class="quote-attr">Permanent Secretary<span>Ministry of Digital Economy</span></div>
+        </div>
+        <div class="quote-slide">
+          <p class="quote-text">Due diligence on their delivery record was the easiest part of the entire investment.</p>
+          <div class="quote-attr">Investment Partner<span>Meridian Capital Partners</span></div>
+        </div>
+      </div>
+      <div class="quote-nav">
+        <button class="quote-arrow" id="quotePrev" aria-label="Previous testimonial">←</button>
+        <div class="quote-dots" id="quoteDots"></div>
+        <button class="quote-arrow" id="quoteNext" aria-label="Next testimonial">→</button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== WATCH / VIDEO FEATURE ===================== -->
+<section class="sec on-ink" id="watch">
+  <div class="glow-field"><div class="glow-blob" style="width:440px; height:440px; top:10%; left:-10%; background:var(--glow-brass); animation-delay:1.2s;"></div></div>
+  <div class="wrap watch">
+    <div class="reveal">
+      <div class="eyebrow">WATCH</div>
+      <h3 style="margin-top:16px;">Inside the Complex.</h3>
+      <p class="lead">A six-minute walkthrough of our data infrastructure floor, our delivery model, and the team behind the work in this brief — filmed on-site with three of our active government partners.</p>
+      <div style="margin-top:26px; display:flex; gap:14px; flex-wrap:wrap;">
+        <a class="btn btn--brass" href="https://wa.me/237677257428?text=Hello%2C%20I%27d%20like%20to%20request%20the%20full%20%22Inside%20the%20Complex%22%20reel." target="_blank" rel="noopener">Request the Full Reel</a>
+      </div>
+    </div>
+    <div class="reveal">
+      <!-- VIDEO SLOT: put your actual reel at video1.mp4, or link to a hosted (e.g. YouTube/Vimeo) URL -->
+      <div class="watch__player" id="watchPlayer">
+        <video id="watchVideo" muted loop playsinline preload="metadata" poster="video1.mp4">
+          <source src="video1.mp4" type="video/mp4">
+        </video>
+        <div class="watch__grid"></div>
+        <div class="watch__shine"></div>
+        <button class="watch__play" id="watchPlayBtn" aria-label="Play the reel"><svg viewBox="0 0 24 24"><path d="M6 4 L20 12 L6 20 Z"/></svg></button>
+        <div class="watch__meta">INSIDE THE COMPLEX — THE FILM</div>
+        <div class="watch__runtime">06:14</div>
+      </div>
+      <div class="watch__note" id="watchNote">Full reel shared directly with qualified partners — tap play to request access.</div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== STATS ===================== -->
+<section class="on-paper">
+  <div class="wrap" style="padding:0;">
+    <div class="stats reveal">
+      <div class="stat"><div class="stat__num" data-count="11">0</div><div class="stat__label">Years in Operation</div></div>
+      <div class="stat"><div class="stat__num" data-count="14">0</div><div class="stat__label">Countries Served</div></div>
+      <div class="stat"><div class="stat__num" data-count="180">0</div><div class="stat__label">Systems Delivered</div></div>
+      <div class="stat"><div class="stat__num" data-count="99" data-suffix="%">0</div><div class="stat__label">Platform Uptime</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- ===================== CONTACT / BACK PAGE ===================== -->
+<section class="sec on-ink" id="contact">
+  <div class="glow-field"><div class="glow-blob" style="width:480px; height:480px; top:-120px; right:0%; background:var(--glow-emerald);"></div></div>
+  <div class="wrap contact">
+    <div class="reveal">
+      <div class="sec__num">THE BACK PAGE</div>
+      <h2 class="sec__title" style="margin-top:16px;">Let's talk about<br>your complex.</h2>
+      <p style="color:var(--slate); max-width:440px; margin-top:16px;">Whether you're evaluating a national system, a data-infrastructure build, or a long-term technology partner — reach the desk directly.</p>
+
+      <div class="contact__channels">
+        <a class="channel channel__wa" href="https://wa.me/237677257428?text=Hello%2C%20WELCOME%20TO%20ABKEL%20TECH%20COMPLEX%2C%20I%27d%20like%20to%20request%20a%20briefing." target="_blank" rel="noopener">
+          <div class="channel__icon"><svg viewBox="0 0 24 24"><path d="M20.5 3.5A11 11 0 0 0 3.6 17.4L2 22l4.7-1.5A11 11 0 1 0 20.5 3.5Zm-8.4 17a9 9 0 0 1-4.6-1.3l-.3-.2-3 1 1-2.9-.2-.3A9 9 0 1 1 12.1 20.5Zm5-6.7c-.3-.1-1.6-.8-1.8-.9s-.4-.1-.6.1-.7.9-.9 1-.3.2-.6.1a7.3 7.3 0 0 1-3.6-3.2c-.3-.5.3-.5.8-1.5a.5.5 0 0 0 0-.5c-.1-.1-.6-1.4-.8-1.9s-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3 1 2.6 1.1 2.8s2 3 4.7 4.2a5.6 5.6 0 0 0 2.9.6c.9-.1 1.6-.7 1.9-1.3.2-.6.2-1 .1-1.1s-.2-.2-.5-.3Z"/></svg></div>
+          <div class="channel__text"><b>WhatsApp the desk</b><span>Fastest response · +237 677 257 428</span></div>
+        </a>
+        <a class="channel" href="tel:+237677257428">
+          <div class="channel__icon"><svg viewBox="0 0 24 24"><path d="M22 16.9v3a2 2 0 0 1-2.2 2 19.8 19.8 0 0 1-8.6-3.1 19.5 19.5 0 0 1-6-6 19.8 19.8 0 0 1-3.1-8.6A2 2 0 0 1 4.1 2h3a2 2 0 0 1 2 1.7c.1.9.3 1.8.6 2.7a2 2 0 0 1-.4 2.1L8.1 9.6a16 16 0 0 0 6.3 6.3l1.1-1.2a2 2 0 0 1 2.1-.4c.9.3 1.8.5 2.7.6a2 2 0 0 1 1.7 2Z"/></svg></div>
+          <div class="channel__text"><b>Call the desk directly</b><span>+237 677 257 428</span></div>
+        </a>
+        <a class="channel" href="mailto:briefing@abkeltechcomplex.com">
+          <div class="channel__icon"><svg viewBox="0 0 24 24"><path d="M4 4h16v16H4Z" stroke-linejoin="round"/><path d="m4 5 8 7 8-7"/></svg></div>
+          <div class="channel__text"><b>Email the desk</b><span>briefing@abkeltechcomplex.com</span></div>
+        </a>
+      </div>
+    </div>
+
+    <!--<div class="reveal">
+      <form class="form" id="briefForm">
+        <label for="fname">Full name</label>
+        <input id="fname" type="text" required placeholder="Your name">
+        <label for="forg">Organization</label>
+        <input id="forg" type="text" required placeholder="Ministry, company, or fund">
+        <label for="femail">Email</label>
+        <input id="femail" type="email" required placeholder="you@organization.com">
+        <label for="fmsg">What are you building?</label>
+        <textarea id="fmsg" rows="4" placeholder="A brief description of the engagement"></textarea>
+        <button type="submit" class="btn btn--brass form__submit">Send the Brief</button>
+        <div class="form__status" id="formStatus" role="status" aria-live="polite"></div>
+        <div class="form__note">Submitting opens a pre-filled email to our briefing desk — no data leaves your device.</div>
+      </form>-->
+    </div>
+  </div>
+</section>
+
+<footer class="on-ink">
+  <div class="wrap">
+    <div class="footer__row">
+      <div class="footer__mark">
+        <!-- LOGO SLOT: same file as the top logo works fine here -->
+        <img class="footer__logo" src="logo.png" alt="Abkel Tech Complex logo" onerror="this.style.display='none'">
+        ABKEL <span>TECH</span> COMPLEX
+      </div>
+      <div class="footer__links">
+        <a href="#services">Services</a>
+        <a href="#works">Works</a>
+        <a href="#masthead">Directors</a>
+        <a href="#contact">Contact</a>
+      </div>
+    </div>
+    <div class="footer__fine" id="footerFine">© <span id="footYear">2023</span> ABKEL TECH COMPLEX. All systems, all divisions, one standard. Replace placeholder contact details before publishing.</div>
+  </div>
+</footer>
+
+</main>
+
+<div class="fab-col">
+  <a class="fab fab--wa" href="https://wa.me/237677257428?text=Hello%20ABKEL%20TECH%20COMPLEX" target="_blank" rel="noopener" aria-label="Chat on WhatsApp">
+    <svg viewBox="0 0 24 24"><path d="M20.5 3.5A11 11 0 0 0 3.6 17.4L2 22l4.7-1.5A11 11 0 1 0 20.5 3.5Zm-8.4 17a9 9 0 0 1-4.6-1.3l-.3-.2-3 1 1-2.9-.2-.3A9 9 0 1 1 12.1 20.5Zm5-6.7c-.3-.1-1.6-.8-1.8-.9s-.4-.1-.6.1-.7.9-.9 1-.3.2-.6.1a7.3 7.3 0 0 1-3.6-3.2c-.3-.5.3-.5.8-1.5a.5.5 0 0 0 0-.5c-.1-.1-.6-1.4-.8-1.9s-.4-.4-.6-.4h-.5a1 1 0 0 0-.7.3 3 3 0 0 0-.9 2.2c0 1.3 1 2.6 1.1 2.8s2 3 4.7 4.2a5.6 5.6 0 0 0 2.9.6c.9-.1 1.6-.7 1.9-1.3.2-.6.2-1 .1-1.1s-.2-.2-.5-.3Z"/></svg>
+  </a>
+  <button class="fab fab--top" id="toTop" aria-label="Back to top"><svg viewBox="0 0 24 24"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+<script>
+(function(){
+  // Footer year
+  var fy = document.getElementById('footYear');
+  if (fy) fy.textContent = new Date().getFullYear();
+
+  // Mobile nav
+  const toggle = document.getElementById('mobileToggle');
+  const nav = document.getElementById('mobileNav');
+  const close = document.getElementById('mobileClose');
+  function openNav(){
+    nav.classList.add('open'); toggle.classList.add('open');
+    toggle.setAttribute('aria-expanded','true'); toggle.setAttribute('aria-label','Close menu');
+  }
+  function closeNav(){
+    nav.classList.remove('open'); toggle.classList.remove('open');
+    toggle.setAttribute('aria-expanded','false'); toggle.setAttribute('aria-label','Open menu');
+  }
+  toggle.addEventListener('click', ()=> nav.classList.contains('open') ? closeNav() : openNav());
+  close.addEventListener('click', closeNav);
+  nav.querySelectorAll('a').forEach(a=>a.addEventListener('click', closeNav));
+  document.addEventListener('keydown', (e)=>{ if(e.key === 'Escape' && nav.classList.contains('open')) closeNav(); });
+
+  // ===== Spine: scroll progress + active-section tracking =====
+  const fill = document.getElementById('progressFill');
+  const dots = Array.from(document.querySelectorAll('.spine__dot'));
+  const sections = dots.map(d => document.querySelector(d.dataset.target)).filter(Boolean);
+
+  function setActive(idx){
+    dots.forEach((d,i)=>{
+      const isActive = i === idx;
+      d.classList.toggle('active', isActive);
+      if(isActive) d.setAttribute('aria-current','true'); else d.removeAttribute('aria-current');
+    });
+  }
+
+  function onScroll(){
+    const doc = document.documentElement;
+    const scrollableHeight = doc.scrollHeight - doc.clientHeight;
+    const scrolled = scrollableHeight > 0 ? (doc.scrollTop / scrollableHeight) * 100 : 0;
+    fill.style.height = Math.min(100, Math.max(0, scrolled)) + '%';
+
+    // Pick the section whose top has most recently crossed the viewport midline.
+    let activeIdx = 0;
+    let bestOffset = -Infinity;
+    sections.forEach((s, i) => {
+      const top = s.getBoundingClientRect().top;
+      if (top <= window.innerHeight * 0.5 && top > bestOffset) {
+        bestOffset = top;
+        activeIdx = i;
+      }
+    });
+    setActive(activeIdx);
+
+    document.getElementById('toTop').classList.toggle('show', window.scrollY > window.innerHeight);
+  }
+  document.addEventListener('scroll', onScroll, {passive:true});
+  window.addEventListener('resize', onScroll);
+  onScroll();
+
+  dots.forEach((d, i) => d.addEventListener('click', () => {
+    const t = sections[i];
+    if (t) t.scrollIntoView({behavior:'smooth'});
+  }));
+  document.getElementById('toTop').addEventListener('click', ()=> window.scrollTo({top:0, behavior:'smooth'}));
+
+  // Reveal on scroll
+  const io = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  }, {threshold:0.15});
+  document.querySelectorAll('.reveal').forEach(el=> io.observe(el));
+
+  // Count-up stats
+  const statEls = document.querySelectorAll('.stat__num');
+  const statIO = new IntersectionObserver((entries)=>{
+    entries.forEach(e=>{
+      if(e.isIntersecting){
+        const el = e.target;
+        const target = parseInt(el.dataset.count, 10);
+        const suffix = el.dataset.suffix || '';
+        const dur = 1400; const start = performance.now();
+        function step(now){
+          const p = Math.min(1, (now-start)/dur);
+          el.textContent = Math.floor(p*target) + suffix;
+          if(p<1) requestAnimationFrame(step); else el.textContent = target + suffix;
+        }
+        requestAnimationFrame(step);
+        statIO.unobserve(el);
+      }
+    });
+  }, {threshold:0.5});
+  statEls.forEach(el=> statIO.observe(el));
+
+  // Testimonial carousel
+  const slides = document.querySelectorAll('.quote-slide');
+  const dotWrap = document.getElementById('quoteDots');
+  slides.forEach((_,i)=>{
+    const b = document.createElement('button');
+    b.className = 'quote-dot' + (i===0?' active':'');
+    b.setAttribute('aria-label', 'Show testimonial ' + (i+1));
+    b.addEventListener('click', ()=> { showQuote(i); stopAuto(); startAuto(); });
+    dotWrap.appendChild(b);
+  });
+  let qIdx = 0; let qTimer;
+  function showQuote(i){
+    slides[qIdx].classList.remove('active');
+    dotWrap.children[qIdx].classList.remove('active');
+    qIdx = (i+slides.length)%slides.length;
+    slides[qIdx].classList.add('active');
+    dotWrap.children[qIdx].classList.add('active');
+  }
+  function nextQuote(){ showQuote(qIdx+1); }
+  function startAuto(){ qTimer = setInterval(nextQuote, 6000); }
+  function stopAuto(){ clearInterval(qTimer); }
+  document.getElementById('quoteNext').addEventListener('click', ()=>{ nextQuote(); stopAuto(); startAuto(); });
+  document.getElementById('quotePrev').addEventListener('click', ()=>{ showQuote(qIdx-1); stopAuto(); startAuto(); });
+  document.querySelector('.quote-rig').addEventListener('mouseenter', stopAuto);
+  document.querySelector('.quote-rig').addEventListener('mouseleave', startAuto);
+  startAuto();
+
+  // Watch "play" — attempt real playback, fall back to a request prompt
+  const watchVideo = document.getElementById('watchVideo');
+  const watchPlayBtn = document.getElementById('watchPlayBtn');
+  const watchNote = document.getElementById('watchNote');
+  watchPlayBtn.addEventListener('click', ()=>{
+    if (watchVideo && watchVideo.querySelector('source').getAttribute('src')) {
+      const playPromise = watchVideo.play();
+      if (playPromise && playPromise.then) {
+        playPromise.then(()=>{
+          watchVideo.controls = true;
+          watchPlayBtn.style.display = 'none';
+        }).catch(()=>{
+          watchNote.textContent = 'Thanks for your interest — use "Request the Full Reel" to have it sent to you directly.';
+        });
+      }
+    } else {
+      watchNote.textContent = 'Thanks for your interest — use "Request the Full Reel" to have it sent to you directly.';
+    }
+  });
+
+  // Contact form -> mailto (guarded so a missing field never throws)
+  const briefForm = document.getElementById('briefForm');
+  if (briefForm) {
+    briefForm.addEventListener('submit', function(e){
+      e.preventDefault();
+      const name = document.getElementById('fname').value.trim();
+      const org = document.getElementById('forg').value.trim();
+      const email = document.getElementById('femail').value.trim();
+      const msg = document.getElementById('fmsg').value.trim();
+      const status = document.getElementById('formStatus');
+      if(!name || !org || !email){
+        if(status) status.textContent = 'Please fill in your name, organization and email.';
+        return;
+      }
+      const body = encodeURIComponent('Name: ' + name + '\nOrganization: ' + org + '\nEmail: ' + email + '\n\n' + msg);
+      const subject = encodeURIComponent('Briefing Request — ' + org);
+      window.location.href = 'mailto:briefing@abkeltechcomplex.com?subject=' + subject + '&body=' + body;
+      if(status) status.textContent = 'Opening your email client…';
+    });
+  }
+
+  // Reduced motion check, used by both 3D scene and tilt
+  const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  // ===== 3D wireframe network — hero signature =====
+  const heroCanvas = document.getElementById('heroCanvas');
+  if (heroCanvas && window.THREE && !reducedMotion) {
+    const scene = new THREE.Scene();
+    const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
+    camera.position.z = 6.2;
+    const renderer = new THREE.WebGLRenderer({ canvas: heroCanvas, alpha: true, antialias: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 2));
+
+    const group = new THREE.Group();
+    scene.add(group);
+
+    const core = new THREE.IcosahedronGeometry(2.1, 1);
+    const wireMat = new THREE.LineBasicMaterial({ color: 0xF2C94C, transparent: true, opacity: 0.55 });
+    const wire = new THREE.LineSegments(new THREE.WireframeGeometry(core), wireMat);
+    group.add(wire);
+
+    const pointsMat = new THREE.PointsMaterial({ color: 0xF2C94C, size: 0.05, transparent: true, opacity: 0.95 });
+    const points = new THREE.Points(core, pointsMat);
+    group.add(points);
+
+    // Outer orbiting ring of nodes to suggest a connected "complex"
+    const ringCount = 18;
+    const ringGeo = new THREE.BufferGeometry();
+    const ringPos = [];
+    for (let i = 0; i < ringCount; i++) {
+      const a = (i / ringCount) * Math.PI * 2;
+      ringPos.push(Math.cos(a) * 3.1, Math.sin(a) * 0.4, Math.sin(a) * 3.1);
+    }
+    ringGeo.setAttribute('position', new THREE.Float32BufferAttribute(ringPos, 3));
+    const ringMat = new THREE.PointsMaterial({ color: 0x8FD6BC, size: 0.045, transparent: true, opacity: 0.7 });
+    const ring = new THREE.Points(ringGeo, ringMat);
+    ring.rotation.x = 0.4;
+    group.add(ring);
+
+    // Second, counter-rotating ring for extra depth
+    const ring2Geo = new THREE.BufferGeometry();
+    const ring2Pos = [];
+    for (let i = 0; i < 12; i++) {
+      const a = (i / 12) * Math.PI * 2;
+      ring2Pos.push(Math.cos(a) * 3.8, Math.cos(a * 2) * 0.6, Math.sin(a) * 3.8);
+    }
+    ring2Geo.setAttribute('position', new THREE.Float32BufferAttribute(ring2Pos, 3));
+    const ring2Mat = new THREE.PointsMaterial({ color: 0xD6AE2E, size: 0.035, transparent: true, opacity: 0.5 });
+    const ring2 = new THREE.Points(ring2Geo, ring2Mat);
+    ring2.rotation.x = -0.6;
+    group.add(ring2);
+
+    // Faint connective lines linking a few outer-ring nodes back to the core, to read as "network"
+    const linkMat = new THREE.LineBasicMaterial({ color: 0xF2C94C, transparent: true, opacity: 0.12 });
+    for (let i = 0; i < ringCount; i += 3) {
+      const px = ringPos[i*3], py = ringPos[i*3+1], pz = ringPos[i*3+2];
+      const g = new THREE.BufferGeometry().setFromPoints([new THREE.Vector3(0,0,0), new THREE.Vector3(px,py,pz)]);
+      group.add(new THREE.Line(g, linkMat));
+    }
+
+    function resize() {
+      const w = heroCanvas.clientWidth, h = heroCanvas.clientHeight;
+      if (w === 0 || h === 0) return;
+      renderer.setSize(w, h, false);
+      camera.aspect = w / h;
+      camera.updateProjectionMatrix();
+    }
+    window.addEventListener('resize', resize);
+    resize();
+
+    let targetRotY = 0, targetRotX = 0;
+    window.addEventListener('mousemove', (e) => {
+      targetRotY = (e.clientX / window.innerWidth - 0.5) * 0.6;
+      targetRotX = (e.clientY / window.innerHeight - 0.5) * 0.3;
+    });
+
+    let rafId;
+    function animate() {
+      group.rotation.y += 0.0022;
+      group.rotation.x += (targetRotX - group.rotation.x) * 0.02;
+      group.rotation.y += (targetRotY * 0.4);
+      ring.rotation.y -= 0.0014;
+      ring2.rotation.y += 0.0009;
+      renderer.render(scene, camera);
+      rafId = requestAnimationFrame(animate);
+    }
+    animate();
+
+    // Pause the render loop when the hero scrolls off-screen (perf, not just aesthetics)
+    const heroIO = new IntersectionObserver((entries)=>{
+      entries.forEach(entry => {
+        if (entry.isIntersecting) { if(!rafId) animate(); }
+        else { cancelAnimationFrame(rafId); rafId = null; }
+      });
+    }, {threshold:0});
+    heroIO.observe(document.getElementById('cover'));
+  }
+
+  // ===== Cursor-follow 3D tilt for cards and avatars =====
+  if (!reducedMotion) {
+    document.querySelectorAll('.tilt').forEach((el) => {
+      const max = 9;
+      el.addEventListener('mousemove', (e) => {
+        const r = el.getBoundingClientRect();
+        const px = (e.clientX - r.left) / r.width;
+        const py = (e.clientY - r.top) / r.height;
+        const rx = (py - 0.5) * -max;
+        const ry = (px - 0.5) * max;
+        el.style.transform = `perspective(700px) rotateX(${rx}deg) rotateY(${ry}deg) translateY(-4px)`;
+      });
+      el.addEventListener('mouseleave', () => { el.style.transform = ''; });
+    });
+  }
+})();
+</script>
+
+</body>
+</html>
